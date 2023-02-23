@@ -131,6 +131,7 @@ function placeInTable(y, x) {
 
 function endGame(msg) {
   // TODO: pop up alert message
+  alert(msg);
 }
 
 /** handleClick: handle click of column top to play piece */
@@ -198,11 +199,41 @@ function checkForWin() {
    * currPlayer
    */
   function _win(cells) {
+    // console.log("cells: ", cells);
 
     // TODO: Check four cells to see if they're all legal & all color of current
     // player
 
+
+    // iterate through cells
+    // check each coordinate falls withing [7 high, 6 wide]
+    // check value for matching player number
+    return cells.every(([y, x]) => y < 6 && x < 7 && board[y][x] === currPlayer)
+
+
+
+  //   let y = cells[0][0];
+  //   let x = cells[0][1];
+  //   let cellPlayer = board[y][x];
+  //   console.log("cellPlayer, y, x: ", cellPlayer, y, x);
+
+  //   for (let i = 0; i = cells.length; i++) {
+  //     y = cells[i][0];
+  //     x = cells[i][1];
+  //     if (cellPlayer !== board[y][x]) {
+  //       return false;
+  //     }
+  //     if (!(y < 6) && !(x < 7)) {
+  //       return false;
+  //     }
+  //   }
+  //   return true;
   }
+
+    // if board[5][0] === 1
+    // if board[5][1] === 1
+    // if board[5][2] === 1
+    // if board[5][3] === 1
 
   // using HEIGHT and WIDTH, generate "check list" of coordinates
   // for 4 cells (starting here) for each of the different
@@ -215,12 +246,12 @@ function checkForWin() {
       // [ [y, x], [y, x], [y, x], [y, x] ]
 
       let horiz = [[y, x], [y, x + 1], [y, x + 2], [y, x + 3]];
-      let vert;
-      let diagDL;
-      let diagDR;
+      let vert = [[y, x], [y + 1, x], [y + 2, x], [y + 3, x]];
+      let diagDL = [[y, x], [y + 1, x - 1], [y + 2, x - 2], [y + 3, x - 3]];
+      let diagDR = [[y, x], [y + 1, x + 1], [y + 2, x + 2], [y + 3, x + 3]];
 
       // find winner (only checking each win-possibility as needed)
-      if (_win(horiz) || _win(vert) || _win(diagDR) || _win(diagDL)) {
+      if (_win(horiz) || _win(vert) || _win(diagDL) || _win(diagDR)) {
         return true;
       }
     }
