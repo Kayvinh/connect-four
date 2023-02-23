@@ -96,11 +96,11 @@ function makeHtmlBoard() {
 
 function findSpotForCol(x) {
   // TODO: write the real version of this, rather than always returning 5
-  for (let i = board.length - 1 ; i >= 0; i--) {
+  for (let y = board.length - 1; y >= 0; y--) { // change y to y
     // if board[5][x] !== null
     // if board[4][x] !== null
-    if (board[i][x] === null) {
-      return i;
+    if (board[y][x] === null) {
+      return y;
     }
   }
 
@@ -114,12 +114,12 @@ function placeInTable(y, x) {
   const newPiece = document.createElement('div');
   newPiece.className = 'piece';
 
-  if (currPlayer === 1){
+  if (currPlayer === 1) {
     newPiece.classList.add('p1');
   } else {
-  newPiece.classList.add('p2');
+    newPiece.classList.add('p2');
   }
-{/* <td id="c-0-0"></td> */}
+  {/* <td id="c-0-0"></td> */ }
   const currCell = document.getElementById(`c-${y}-${x}`);
   console.log(currCell);
   currCell.appendChild(newPiece);
@@ -138,8 +138,8 @@ function endGame(msg) {
 
 function handleClick(evt) {
   // get x from ID of clicked cell
-  let x = evt.target.id;
-  x = Number(x[x.length - 1]);
+  const xId = evt.target.id; // don't call this x since it's not actually; the real x is defined later
+  let x = Number(xId[xId.length - 1]);
 
   // get next spot in column (if none, ignore click)
   let y = findSpotForCol(x);
@@ -153,26 +153,26 @@ function handleClick(evt) {
   placeInTable(y, x);
   board[y][x] = currPlayer;
 
-  
+
   // check for win
   if (checkForWin()) {
     return endGame(`Player ${currPlayer} won!`);
   }
-  
+
   // check for tie
   // TODO: check if all cells in board are filled; if so call, call endGame
   // let isBoardFilled = board.every((item) => {
   //   return item === null;
   // });
-  let isBoardFilled = false;
-  
+  let isBoardFilled = false;  // move into its own function
 
-  for(let row of board) {
-    let isRowFilled =  row.every((item) => {
+
+  for (let row of board) {
+    let isRowFilled = row.every((item) => {
       return item !== null;
     });
 
-    if(!isRowFilled) {
+    if (!isRowFilled) {
       break;
     } else {
       isBoardFilled = true;
@@ -180,13 +180,14 @@ function handleClick(evt) {
   }
 
   // console.log(isBoardFilled);
-  if(isBoardFilled) {
+  if (isBoardFilled) {
     alert("Game is a tie!");
   }
-  
+
   // switch players
   // TODO: switch currPlayer 1 <-> 2
-  (currPlayer === 1) ? currPlayer = 2 : currPlayer = 1;
+  // (currPlayer === 1) ? currPlayer = 2 : currPlayer = 1; <- should be if/else
+  currPlayer = (currPlayer === 1) ? 2 : 1;
 }
 
 /** checkForWin: check board cell-by-cell for "does a win start here?" */
@@ -209,35 +210,35 @@ function checkForWin() {
     // check each coordinate falls withing [7 high, 6 wide]
     // check value for matching player number
     return cells.every(([y, x]) => {
-      return y < 6 && x < 7 && board[y][x] === currPlayer;
+      return y < HEIGHT && WIDTH < 7 && board[y][x] === currPlayer; //use height and width variables
     })
 
 
 
-  //   let y = cells[0][0];
-  //   let x = cells[0][1];
-  //   let cellPlayer = board[y][x];
-  //   console.log("cellPlayer, y, x: ", cellPlayer, y, x);
+    //   let y = cells[0][0];
+    //   let x = cells[0][1];
+    //   let cellPlayer = board[y][x];
+    //   console.log("cellPlayer, y, x: ", cellPlayer, y, x);
 
-  //   for (let i = 0; i = cells.length; i++) {
-  //     y = cells[i][0];
-  //     x = cells[i][1];
-  //     if (cellPlayer !== board[y][x]) {
-  //       return false;
-  //     }
-  //     if (!(y < 6) && !(x < 7)) {
-  //       return false;
-  //     }
-  //   }
-  //   return true;
+    //   for (let i = 0; i = cells.length; i++) {
+    //     y = cells[i][0];
+    //     x = cells[i][1];
+    //     if (cellPlayer !== board[y][x]) {
+    //       return false;
+    //     }
+    //     if (!(y < 6) && !(x < 7)) {
+    //       return false;
+    //     }
+    //   }
+    //   return true;
 
-  
+
   }
 
-    // if board[5][0] === 1
-    // if board[5][1] === 1
-    // if board[5][2] === 1
-    // if board[5][3] === 1
+  // if board[5][0] === 1
+  // if board[5][1] === 1
+  // if board[5][2] === 1
+  // if board[5][3] === 1
 
   // using HEIGHT and WIDTH, generate "check list" of coordinates
   // for 4 cells (starting here) for each of the different
