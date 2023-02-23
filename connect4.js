@@ -208,7 +208,9 @@ function checkForWin() {
     // iterate through cells
     // check each coordinate falls withing [7 high, 6 wide]
     // check value for matching player number
-    return cells.every(([y, x]) => y < 6 && x < 7 && board[y][x] === currPlayer)
+    return cells.every(([y, x]) => {
+      return y < 6 && x < 7 && board[y][x] === currPlayer;
+    })
 
 
 
@@ -228,6 +230,8 @@ function checkForWin() {
   //     }
   //   }
   //   return true;
+
+  
   }
 
     // if board[5][0] === 1
