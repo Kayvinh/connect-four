@@ -96,7 +96,15 @@ function makeHtmlBoard() {
 
 function findSpotForCol(x) {
   // TODO: write the real version of this, rather than always returning 5
-  return 5;
+  for (let i = board.length - 1 ; i >= 0; i--) {
+    // if board[5][x] !== null
+    // if board[4][x] !== null
+    if (board[i][x] === null) {
+      return i;
+    }
+  }
+
+  return null;
 }
 
 /** placeInTable: update DOM to place piece into HTML table of board */
@@ -130,9 +138,7 @@ function endGame(msg) {
 function handleClick(evt) {
   // get x from ID of clicked cell
   let x = evt.target.id;
-  console.log("x: ", x);
   x = Number(x[x.length - 1]);
-  console.log("x: ", x);
 
   // get next spot in column (if none, ignore click)
   let y = findSpotForCol(x);
@@ -142,19 +148,44 @@ function handleClick(evt) {
 
   // place piece in board and add to HTML table
   // TODO: add line to update in-memory board
-  console.log("y, x: ", y, x);
+  //console.log("y, x: ", y, x);
   placeInTable(y, x);
+  board[y][x] = currPlayer;
 
+  
   // check for win
   if (checkForWin()) {
     return endGame(`Player ${currPlayer} won!`);
   }
-
+  
   // check for tie
   // TODO: check if all cells in board are filled; if so call, call endGame
+  // let isBoardFilled = board.every((item) => {
+  //   return item === null;
+  // });
+  let isBoardFilled = false;
+  
 
+  for(let row of board) {
+    let isRowFilled =  row.every((item) => {
+      return item !== null;
+    });
+
+    if(!isRowFilled) {
+      break;
+    } else {
+      isBoardFilled = true;
+    }
+  }
+
+  // console.log(isBoardFilled);
+  if(isBoardFilled) {
+    alert("Game is a tie!");
+  }
+  
   // switch players
   // TODO: switch currPlayer 1 <-> 2
+  (currPlayer === 1) ? currPlayer = 2 : currPlayer = 1;
 }
 
 /** checkForWin: check board cell-by-cell for "does a win start here?" */
